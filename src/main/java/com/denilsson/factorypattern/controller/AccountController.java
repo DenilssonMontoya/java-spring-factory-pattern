@@ -7,7 +7,6 @@ import com.denilsson.factorypattern.exception.FeeCalcNotImplementedException;
 import com.denilsson.factorypattern.model.Account;
 import com.denilsson.factorypattern.service.AccounServiceIF;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,12 +38,12 @@ public class AccountController {
     public ResponseEntity<Double> calculateFee(@PathVariable String accountId){
         Optional<Account> account = accountControllerService.findById(accountId);
 
-        if(!account.isPresent())
+        if(account.isEmpty())
             throw new AccountNotFoundException(accountId);
 
         Optional<FeeCalculatorIF> feeCalculatorIF = feeCalculatorFactory.getFeeCalculator(account.get().getAccountType());
 
-        if(!feeCalculatorIF.isPresent())
+        if(feeCalculatorIF.isEmpty())
             throw new  FeeCalcNotImplementedException(account.get().getAccountType());
 
         return new ResponseEntity<>(feeCalculatorIF.get().calculateFee(), HttpStatus.OK);

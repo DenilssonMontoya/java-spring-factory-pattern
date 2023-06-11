@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class AccountServiceImpl implements AccounServiceIF {
 
-    private static List<Account> accounts = new ArrayList<>();
+    private List<Account> accounts = new ArrayList<>();
 
     @Override
     public String createAccount(Account account) {
